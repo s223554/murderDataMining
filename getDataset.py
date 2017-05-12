@@ -11,10 +11,3 @@ murder_zip = zipfile.ZipFile(zip_path)
 murder_zip.extractall(path=MURDER_PATH)
 murder_zip.close()
 
-import pandas as pd
-
-def load_data(path=MURDER_PATH):
-    csv_path = os.path.join(path, "database.csv")
-    return pd.read_csv(csv_path)
-
-murder_data = load_data()
