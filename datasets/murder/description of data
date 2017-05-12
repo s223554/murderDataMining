@@ -1,0 +1,34 @@
+   Record ID Agency Code Agency Name       Agency Type       City   State  \
+0          1     AK00101   Anchorage  Municipal Police  Anchorage  Alaska
+1          2     AK00101   Anchorage  Municipal Police  Anchorage  Alaska
+2          3     AK00101   Anchorage  Municipal Police  Anchorage  Alaska
+3          4     AK00101   Anchorage  Municipal Police  Anchorage  Alaska
+4          5     AK00101   Anchorage  Municipal Police  Anchorage  Alaska
+
+   Year    Month  Incident              Crime Type      ...       \
+0  1980  January         1  Murder or Manslaughter      ...
+1  1980    March         1  Murder or Manslaughter      ...
+2  1980    March         2  Murder or Manslaughter      ...
+3  1980    April         1  Murder or Manslaughter      ...
+4  1980    April         2  Murder or Manslaughter      ...
+
+  Victim Ethnicity Perpetrator Sex  Perpetrator Age  \
+0          Unknown            Male               15
+1          Unknown            Male               42
+2          Unknown         Unknown                0
+3          Unknown            Male               42
+4          Unknown         Unknown                0
+
+                Perpetrator Race Perpetrator Ethnicity  Relationship  \
+0  Native American/Alaska Native               Unknown  Acquaintance
+1                          White               Unknown  Acquaintance
+2                        Unknown               Unknown       Unknown
+3                          White               Unknown  Acquaintance
+4                        Unknown               Unknown       Unknown
+
+          Weapon Victim Count Perpetrator Count Record Source
+0   Blunt Object            0                 0           FBI
+1  Strangulation            0                 0           FBI
+2        Unknown            0                 0           FBI
+3  Strangulation            0                 0           FBI
+4        Unknown            0                 1           FBI
