@@ -32,3 +32,53 @@
 2        Unknown            0                 0           FBI
 3  Strangulation            0                 0           FBI
 4        Unknown            0                 1           FBI
+
+info()
+
+Record ID                638454 non-null int64
+Agency Code              638454 non-null object
+Agency Name              638454 non-null object
+Agency Type              638454 non-null object
+City                     638454 non-null object
+State                    638454 non-null object
+Year                     638454 non-null int64
+Month                    638454 non-null object
+Incident                 638454 non-null int64
+Crime Type               638454 non-null object
+Crime Solved             638454 non-null object
+Victim Sex               638454 non-null object
+Victim Age               638454 non-null int64
+Victim Race              638454 non-null object
+Victim Ethnicity         638454 non-null object
+Perpetrator Sex          638454 non-null object
+Perpetrator Age          638454 non-null object
+Perpetrator Race         638454 non-null object
+Perpetrator Ethnicity    638454 non-null object
+Relationship             638454 non-null object
+Weapon                   638454 non-null object
+Victim Count             638454 non-null int64
+Perpetrator Count        638454 non-null int64
+Record Source            638454 non-null object
+dtypes: int64(6), object(18)
+memory usage: 116.9+ MB
+
+describe()
+
+          Record ID           Year       Incident     Victim Age  \
+count  638454.00000  638454.000000  638454.000000  638454.000000
+mean   319227.50000    1995.801102      22.967924      35.033512
+std    184305.93872       9.927693      92.149821      41.628306
+min         1.00000    1980.000000       0.000000       0.000000
+25%    159614.25000    1987.000000       1.000000      22.000000
+50%    319227.50000    1995.000000       2.000000      30.000000
+75%    478840.75000    2004.000000      10.000000      42.000000
+max    638454.00000    2014.000000     999.000000     998.000000
+        Victim Count  Perpetrator Count
+count  638454.000000      638454.000000
+mean        0.123334           0.185224
+std         0.537733           0.585496
+min         0.000000           0.000000
+25%         0.000000           0.000000
+50%         0.000000           0.000000
+75%         0.000000           0.000000
+max        10.000000          10.000000
