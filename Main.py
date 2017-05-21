@@ -46,7 +46,7 @@ train_set, test_set = train_test_split(murder_data, test_size=0.2, random_state=
 corr_matrix = murder_data.corr()
 corr_matrix["Victim Age"].sort_values(ascending=False)
 
-from sklearn.preprocessing import LabelBinarizer,MultiLabelBinarizer
+from sklearn.preprocessing import LabelBinarizer,LabelEncoder
 
 encoder = LabelBinarizer()
 encoder.fit_transform(murder_data['Weapon'])
@@ -79,6 +79,32 @@ cat_attribs = ['State','Crime Type','Victim Ethnicity','Perpetrator Sex','Relati
 #cat_attribs = ['Victim Race']
 num_attribs = ["Incident",'Victim Age','Victim Count','Perpetrator Count']
 
+
+class MultiColumnLabelEncoder:
+    def __init__(self,columns = None):
+        self.columns = columns # array of column names to encode
+
+    def fit(self,X,y=None):
+        return self # not relevant here
+
+    def transform(self,X):
+        '''
+        Transforms columns of X specified in self.columns using
+        LabelEncoder(). If no columns specified, transforms all
+        columns in X.
+        '''
+        output = X.copy()
+        if self.columns is not None:
+            for col in self.columns:
+                output[col] = LabelEncoder().fit_transform(output[col])
+        else:
+            for colname,col in output.iteritems():
+                output[colname] = LabelEncoder().fit_transform(col)
+        return output
+
+    def fit_transform(self,X,y=None):
+        return self.fit(X,y).transform(X)
+
 num_pipeline = Pipeline([
         ('selector', DataFrameSelector(num_attribs)),
         ('imputer', Imputer(strategy="median")),
@@ -88,7 +114,7 @@ num_pipeline = Pipeline([
 
 cat_pipeline = Pipeline([
         ('selector', DataFrameSelector(cat_attribs)),
-        ('label_binarizer', MultiLabelBinarizer()),
+        ('label_binarizer', MultiColumnLabelEncoder()),
     ])
 
 preparation_pipeline = FeatureUnion(transformer_list=[
@@ -97,7 +123,7 @@ preparation_pipeline = FeatureUnion(transformer_list=[
     ])
 
 murder_prepared = preparation_pipeline.fit_transform(prepared_data)
-murder_prepared = cat_pipeline.fit_transform(prepared_data)
+#murder_prepared = cat_pipeline.fit_transform(prepared_data)
 
 #encoder = LabelBinarizer()
 #encoder.fit_transform(prepared_data['Victim Race'])
