@@ -56,7 +56,9 @@ index2 = murder_data['Perpetrator Race']=='Black'
 prepared_data = murder_data[index1].append(murder_data[index2])
 
 train_set, test_set = train_test_split(prepared_data, test_size=0.2, random_state=42)
-
+label_enconder = LabelEncoder()
+y_train = label_enconder.fit_transform(train_set['Perpetrator Race'])
+y_test = label_enconder.fit_transform(test_set['Perpetrator Race'])
 # property choosing
 
 
@@ -122,4 +124,65 @@ preparation_pipeline = FeatureUnion(transformer_list=[
         ("cat_pipeline", cat_pipeline),
     ])
 
-murder_prepared = preparation_pipeline.fit_transform(prepared_data)
+murder_train = preparation_pipeline.fit_transform(train_set)
+murder_test = preparation_pipeline.fit_transform(test_set)
+
+from sklearn.linear_model import SGDClassifier
+
+sgd_clf = SGDClassifier(random_state=42)
+sgd_clf.fit(murder_train, y_train)
+
+sgd_clf.predict(murder_test)
+
+from sklearn.model_selection import cross_val_score,cross_val_predict
+cross_val_score(sgd_clf, murder_train, y_train, cv=3, scoring="accuracy")
+
+from sklearn.metrics import confusion_matrix,precision_score, recall_score, precision_recall_curve
+y_train_pred = cross_val_predict(sgd_clf, murder_train, y_train, cv=3)
+confusion_matrix(y_train, y_train_pred)
+
+precision_score(y_train, y_train_pred)
+recall_score(y_train, y_train_pred)
+
+y_scores = cross_val_predict(sgd_clf, murder_train, y_train, cv=3, method="decision_function")
+precisions, recalls, thresholds = precision_recall_curve(y_train, y_scores)
+
+#plot precision recall curve
+
+def plot_precision_recall_vs_threshold(precisions, recalls, thresholds):
+    plt.plot(thresholds, precisions[:-1], "b--", label="Precision", linewidth=2)
+    plt.plot(thresholds, recalls[:-1], "g-", label="Recall", linewidth=2)
+    plt.xlabel("Threshold", fontsize=16)
+    plt.legend(loc="center left", fontsize=16)
+    plt.ylim([0, 1])
+
+plt.figure(figsize=(8, 4))
+plot_precision_recall_vs_threshold(precisions, recalls, thresholds)
+plt.xlim([-3, 3])
+
+
+
+def plot_precision_vs_recall(precisions, recalls):
+    plt.plot(recalls, precisions, "b-", linewidth=2)
+    plt.xlabel("Recall", fontsize=16)
+    plt.ylabel("Precision", fontsize=16)
+    plt.axis([0, 1, 0, 1])
+
+plt.figure(figsize=(8, 6))
+plot_precision_vs_recall(precisions, recalls)
+
+# plot ROC curve
+
+from sklearn.metrics import roc_curve
+
+fpr, tpr, thresholds = roc_curve(y_train, y_scores)
+
+def plot_roc_curve(fpr, tpr, **options):
+    plt.plot(fpr, tpr, linewidth=2, **options)
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.axis([0, 1, 0, 1])
+    plt.xlabel('False Positive Rate', fontsize=16)
+    plt.ylabel('True Positive Rate', fontsize=16)
+
+plt.figure(figsize=(8, 6))
+plot_roc_curve(fpr, tpr)
