@@ -74,9 +74,9 @@ class DataFrameSelector(BaseEstimator, TransformerMixin):
     def transform(self, X):
         return X[self.attribute_names].values
 
-cat_attribs = ['State','Crime Type','Victim Ethnicity','Perpetrator Sex','Relationship','Weapon'\
-               ,'Victim Sex','Victim Race']
-#cat_attribs = ['Victim Race']
+#cat_attribs = ['State','Crime Type','Victim Ethnicity','Perpetrator Sex','Relationship','Weapon'\
+#               ,'Victim Sex','Victim Race']
+cat_attribs = ['Victim Race']
 num_attribs = ["Incident",'Victim Age','Victim Count','Perpetrator Count']
 
 
@@ -96,10 +96,10 @@ class MultiColumnLabelEncoder:
         output = X.copy()
         if self.columns is not None:
             for col in self.columns:
-                output[col] = LabelEncoder().fit_transform(output[col])
+                output[col] = LabelBinarizer().fit_transform(output[col])
         else:
             for colname,col in output.iteritems():
-                output[colname] = LabelEncoder().fit_transform(col)
+                output[colname] = LabelBinarizer().fit_transform(col)
         return output
 
     def fit_transform(self,X,y=None):
@@ -114,7 +114,7 @@ num_pipeline = Pipeline([
 
 cat_pipeline = Pipeline([
         ('selector', DataFrameSelector(cat_attribs)),
-        ('label_binarizer', MultiColumnLabelEncoder()),
+        ('encoder', LabelBinarizer()),
     ])
 
 preparation_pipeline = FeatureUnion(transformer_list=[
@@ -123,7 +123,3 @@ preparation_pipeline = FeatureUnion(transformer_list=[
     ])
 
 murder_prepared = preparation_pipeline.fit_transform(prepared_data)
-#murder_prepared = cat_pipeline.fit_transform(prepared_data)
-
-#encoder = LabelBinarizer()
-#encoder.fit_transform(prepared_data['Victim Race'])
